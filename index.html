@@ -1,44 +1,131 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Crimson.wtf</title>
-  <style>
-    body {
-      background: #050505;
-      color: #ff1a3c;
-      font-family: Arial;
-      text-align: center;
-      padding-top: 100px;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crimson.wtf</title>
 
-    .box {
-      border: 1px solid #ff1a3c;
-      display: inline-block;
-      padding: 20px;
-      border-radius: 10px;
-    }
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
 
-    a {
-      display: block;
-      margin: 10px;
-      color: #ff1a3c;
-      text-decoration: none;
-    }
+<style>
+body {
+  margin: 0;
+  background: #040404;
+  color: #ff003c;
+  font-family: 'Orbitron', sans-serif;
+  overflow: hidden;
+}
 
-    a:hover {
-      color: white;
-    }
-  </style>
+/* background glow */
+.bg {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, #2a0008, #040404 70%);
+  animation: pulse 5s infinite alternate;
+  z-index: -1;
+}
+
+@keyframes pulse {
+  from { filter: brightness(1); }
+  to { filter: brightness(1.3); }
+}
+
+/* container */
+.container {
+  text-align: center;
+  margin-top: 12vh;
+}
+
+/* title */
+.title {
+  font-size: 55px;
+  letter-spacing: 4px;
+  text-shadow: 0 0 10px #ff003c, 0 0 30px #ff003c;
+}
+
+/* glitch */
+.glitch {
+  position: relative;
+}
+
+.glitch::before,
+.glitch::after {
+  content: "CRIMSON.WTF";
+  position: absolute;
+  left: 0;
+  width: 100%;
+}
+
+.glitch::before {
+  color: cyan;
+  transform: translateX(-2px);
+  animation: glitch 2s infinite;
+}
+
+.glitch::after {
+  color: magenta;
+  transform: translateX(2px);
+  animation: glitch 2s infinite;
+}
+
+@keyframes glitch {
+  0% { clip-path: inset(0 0 80% 0); }
+  50% { clip-path: inset(40% 0 40% 0); }
+  100% { clip-path: inset(80% 0 0 0); }
+}
+
+/* subtitle */
+.subtitle {
+  color: #aaa;
+  margin-bottom: 40px;
+}
+
+/* panel */
+.panel {
+  display: inline-block;
+  padding: 25px;
+  border: 1px solid #ff003c;
+  border-radius: 12px;
+  box-shadow: 0 0 20px #ff003c33;
+  background: rgba(0,0,0,0.6);
+}
+
+/* buttons */
+button {
+  background: transparent;
+  border: 1px solid #ff003c;
+  color: #ff003c;
+  padding: 10px 20px;
+  margin: 10px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: 0.2s;
+}
+
+button:hover {
+  background: #ff003c;
+  color: black;
+  box-shadow: 0 0 15px #ff003c;
+}
+</style>
 </head>
 
 <body>
-  <div class="box">
-    <h1>CRIMSON.WTF</h1>
-    <p>Cybersecurity Tools Lab</p>
 
-    <a href="#">Scanner</a>
-    <a href="#">Analyzer</a>
-    <a href="#">Logs</a>
+<div class="bg"></div>
+
+<div class="container">
+  <h1 class="title glitch">CRIMSON.WTF</h1>
+  <p class="subtitle">Cybersecurity Tools Lab</p>
+
+  <div class="panel">
+    <button>Scanner</button>
+    <button>Analyzer</button>
+    <button>Logs</button>
+    <button>Tools</button>
   </div>
+</div>
+
 </body>
 </html>
