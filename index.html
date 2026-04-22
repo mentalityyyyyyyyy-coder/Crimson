@@ -15,7 +15,7 @@
   font-family: 'JetBrains Mono', monospace;
 }
 
-/* ===== BOOT ===== */
+/* ================= BOOT ================= */
 #boot {
   position: fixed;
   inset: 0;
@@ -29,9 +29,10 @@
 }
 
 #boot h1 {
-  font-size: 40px;
+  font-size: 42px;
   letter-spacing: 8px;
-  text-shadow: 0 0 20px #ff1e2f;
+  text-shadow: 0 0 25px #ff1e2f;
+  animation: flicker 2s infinite;
 }
 
 #bootText {
@@ -45,13 +46,14 @@
   font-size: 18px;
 }
 
-/* ===== MAIN ===== */
+/* ================= MAIN ================= */
 body {
   background: #050008;
   overflow-x: hidden;
   color: #ff2a3d;
 }
 
+/* MATRIX */
 canvas {
   position: fixed;
   top: 0;
@@ -59,12 +61,13 @@ canvas {
   z-index: -1;
 }
 
+/* PAGE FADE IN */
 .container {
   text-align: center;
   padding-top: 80px;
   display: none;
   opacity: 0;
-  transform: translateY(15px);
+  transform: translateY(20px);
 }
 
 .container.show {
@@ -81,21 +84,35 @@ h1 {
   font-size: 72px;
   letter-spacing: 12px;
   color: #ff1e2f;
-  text-shadow: 0 0 10px #ff1e2f, 0 0 50px #8b0012;
+  text-shadow:
+    0 0 10px #ff1e2f,
+    0 0 40px #8b0012;
+  animation: flicker 2.5s infinite;
 }
 
+/* subtitle */
 .subtitle {
   margin-top: 10px;
   font-size: 18px;
   color: #ff5a6a;
 }
 
-/* ===== DROPDOWNS ===== */
+/* ================= FLICKER ================= */
+@keyframes flicker {
+  0%,100% { opacity: 1; transform: translate(0); }
+  92% { opacity: 0.85; }
+  93% { transform: translate(2px,-1px); }
+  94% { transform: translate(-2px,1px); }
+  95% { transform: translate(1px,0); }
+}
+
+/* ================= DROPDOWNS ================= */
 .dropdown {
   width: 60%;
   margin: 30px auto;
 }
 
+/* CYBER BUTTON */
 .dropdown button {
   width: 100%;
   padding: 18px;
@@ -107,24 +124,80 @@ h1 {
   text-align: left;
 
   clip-path: polygon(0 0, 92% 0, 100% 35%, 100% 100%, 8% 100%, 0 65%);
+  position: relative;
+  overflow: hidden;
+  transition: 0.3s;
 }
 
+.dropdown button:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 30px rgba(255,30,47,0.6);
+}
+
+/* scan glow */
+.dropdown button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 50%, rgba(255,30,47,0.25), transparent 60%);
+  opacity: 0;
+  transition: 0.4s;
+}
+
+.dropdown button::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -40%;
+  width: 30%;
+  height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255,30,47,0.4), transparent);
+  transform: rotate(25deg);
+  opacity: 0;
+}
+
+.dropdown button:hover::before {
+  opacity: 1;
+}
+
+.dropdown button:hover::after {
+  opacity: 1;
+  animation: scan 1s infinite;
+}
+
+@keyframes scan {
+  0% { left: -40%; }
+  100% { left: 120%; }
+}
+
+/* CONTENT */
 .dropdown-content {
   display: none;
   background: rgba(20,0,10,0.92);
   padding: 12px;
   border-left: 2px solid #ff1e2f;
+  animation: dropIn 0.25s ease;
 }
 
+@keyframes dropIn {
+  from { opacity: 0; transform: translateY(-10px); filter: blur(3px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+/* ITEMS */
 .item {
   padding: 10px;
   margin: 6px 0;
   border-left: 2px solid #ff1e2f;
   color: #ff8a93;
+  cursor: pointer;
+  transition: 0.2s;
 }
 
 .item:hover {
   background: rgba(255,30,47,0.15);
+  transform: translateX(5px);
+  text-shadow: 0 0 10px rgba(255,30,47,0.6);
   color: white;
 }
 
@@ -196,16 +269,13 @@ body::before {
       <div class="dropdown">
         <button onclick="toggle(this)">▶ Minecraft Tools</button>
         <div class="dropdown-content">
-
-          <div class="item"><a href="https://meteorclient.com" target="_blank">Meteor Client</a></div>
-          <div class="item"><a href="https://wurstclient.net" target="_blank">Wurst Client</a></div>
+          <div class="item"><a href="https://meteorclient.com" target="_blank">Meteor</a></div>
+          <div class="item"><a href="https://wurstclient.net" target="_blank">Wurst</a></div>
           <div class="item"><a href="https://liquidbounce.net" target="_blank">LiquidBounce</a></div>
 
-          <!-- extra free legit tools -->
-          <div class="item"><a href="https://fabricmc.net/" target="_blank">Fabric Loader (mod base)</a></div>
-          <div class="item"><a href="https://optifine.net/" target="_blank">OptiFine (performance)</a></div>
-          <div class="item"><a href="https://modrinth.com/" target="_blank">Modrinth Mods</a></div>
-
+          <div class="item"><a href="https://fabricmc.net" target="_blank">Fabric (Mods Base)</a></div>
+          <div class="item"><a href="https://optifine.net" target="_blank">OptiFine</a></div>
+          <div class="item"><a href="https://modrinth.com" target="_blank">Modrinth</a></div>
         </div>
       </div>
 
@@ -224,44 +294,45 @@ body::before {
       <div class="item">ASCII Art Tool</div>
     </div>
   </div>
+
 </div>
 
 <script>
 
-/* BOOT SPEED */
-let progress = 0;
+/* BOOT (slow → fast → slow) */
+let p = 0;
 const boot = document.getElementById("boot");
 const container = document.querySelector(".container");
-const progressText = document.getElementById("progress");
+const progress = document.getElementById("progress");
 const bootText = document.getElementById("bootText");
 
 const msgs = [
   "Initializing core...",
   "Loading modules...",
-  "Decrypting UI...",
-  "Syncing systems...",
+  "Decrypting system...",
+  "Syncing interface...",
   "Finalizing..."
 ];
 
 let m = 0;
 
-function speed(p){
-  if(p < 25) return 80;
-  if(p < 75) return 25;
+function speed(x){
+  if(x < 25) return 80;
+  if(x < 75) return 25;
   return 90;
 }
 
 function loop(){
   setTimeout(() => {
-    progress++;
-    progressText.innerText = progress + "%";
+    p++;
+    progress.innerText = p + "%";
 
-    if(progress % 20 === 0 && m < msgs.length-1){
+    if(p % 20 === 0 && m < msgs.length-1){
       m++;
       bootText.innerText = msgs[m];
     }
 
-    if(progress >= 100){
+    if(p >= 100){
       boot.style.display = "none";
       container.style.display = "block";
       setTimeout(() => container.classList.add("show"), 50);
@@ -269,7 +340,7 @@ function loop(){
     }
 
     loop();
-  }, speed(progress));
+  }, speed(p));
 }
 
 loop();
