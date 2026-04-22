@@ -15,7 +15,7 @@
   font-family: 'JetBrains Mono', monospace;
 }
 
-/* ================= BOOT SCREEN ================= */
+/* ================= BOOT ================= */
 #boot {
   position: fixed;
   inset: 0;
@@ -45,14 +45,13 @@
   font-size: 18px;
 }
 
-/* ================= MAIN SITE ================= */
+/* ================= MAIN ================= */
 body {
   background: #050008;
   overflow-x: hidden;
   color: #ff2a3d;
 }
 
-/* MATRIX */
 canvas {
   position: fixed;
   top: 0;
@@ -60,11 +59,10 @@ canvas {
   z-index: -1;
 }
 
-/* MAIN */
 .container {
   text-align: center;
   padding-top: 80px;
-  display: none; /* hidden until boot finishes */
+  display: none;
 }
 
 h1 {
@@ -80,7 +78,7 @@ h1 {
   color: #ff5a6a;
 }
 
-/* DROPDOWNS */
+/* ================= DROPDOWNS ================= */
 .dropdown {
   width: 60%;
   margin: 30px auto;
@@ -95,6 +93,7 @@ h1 {
   border: 1px solid rgba(255,30,47,0.6);
   cursor: pointer;
   text-align: left;
+
   clip-path: polygon(0 0, 92% 0, 100% 35%, 100% 100%, 8% 100%, 0 65%);
 }
 
@@ -105,7 +104,7 @@ h1 {
   border-left: 2px solid #ff1e2f;
 }
 
-/* ITEMS */
+/* items */
 .item {
   padding: 10px;
   margin: 6px 0;
@@ -119,11 +118,22 @@ h1 {
   color: white;
 }
 
-/* LINKS */
-a {
-  color: inherit;
-  text-decoration: none;
-  display: block;
+/* SUB DROPDOWN (ROBLOX FIX) */
+.sub-dropdown button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 8px;
+  background: rgba(40,0,15,0.8);
+  color: #ff4b5c;
+  border: 1px solid rgba(255,30,47,0.4);
+  cursor: pointer;
+  text-align: left;
+  clip-path: polygon(0 0, 90% 0, 100% 40%, 100% 100%, 10% 100%, 0 60%);
+}
+
+.sub-content {
+  display: none;
+  padding-left: 12px;
 }
 
 /* scanlines */
@@ -146,10 +156,10 @@ body::before {
 
 <body>
 
-<!-- ================= BOOT SCREEN ================= -->
+<!-- BOOT SCREEN -->
 <div id="boot">
   <h1>CRIMSON SYSTEM</h1>
-  <div id="bootText">Initializing neural interface...</div>
+  <div id="bootText">Initializing core...</div>
   <div id="progress">0%</div>
 </div>
 
@@ -174,15 +184,17 @@ body::before {
     <button onclick="toggle(this)">▶ Games</button>
     <div class="dropdown-content">
 
-      <!-- ROBLOX -->
-      <div class="item">ROBLOX TOOLS</div>
+      <!-- ROBLOX DROPDOWN FIXED -->
+      <div class="sub-dropdown">
+        <button onclick="toggleSub(this)">▶ ROBLOX</button>
+        <div class="sub-content">
+          <div class="item"><a href="https://getsolara.dev/" target="_blank">Solara</a></div>
+          <div class="item"><a href="https://www.xeno.now/" target="_blank">Xeno</a></div>
+          <div class="item"><a href="https://realvelocity.xyz/" target="_blank">Velocity</a></div>
+          <div class="item"><a href="https://yub-x.net/" target="_blank">YUB-X</a></div>
+        </div>
+      </div>
 
-      <div class="item"><a href="https://getsolara.dev/" target="_blank">Solara</a></div>
-      <div class="item"><a href="https://www.xeno.now/" target="_blank">Xeno</a></div>
-      <div class="item"><a href="https://realvelocity.xyz/" target="_blank">Velocity</a></div>
-      <div class="item"><a href="https://yub-x.net/" target="_blank">YUB-X</a></div>
-
-      <!-- OTHER GAMES -->
       <div class="item">MINECRAFT</div>
       <div class="item">FORTNITE</div>
       <div class="item">GEOMETRY DASH</div>
@@ -203,58 +215,69 @@ body::before {
 
 <script>
 
-/* ================= BOOT SEQUENCE ================= */
+/* ===== SMART BOOT SPEED (SLOW → FAST → SLOW) ===== */
 let progress = 0;
 const progressText = document.getElementById("progress");
 const boot = document.getElementById("boot");
 const container = document.querySelector(".container");
 
+const bootText = document.getElementById("bootText");
 const messages = [
-  "Initializing neural interface...",
-  "Loading CRIMSON kernel...",
-  "Decrypting modules...",
-  "Syncing cyber network...",
-  "Finalizing system access..."
+  "Initializing core...",
+  "Loading encryption layer...",
+  "Syncing modules...",
+  "Injecting UI systems...",
+  "Finalizing access..."
 ];
 
-let msgIndex = 0;
-const bootText = document.getElementById("bootText");
+let msg = 0;
 
-const interval = setInterval(() => {
-  progress++;
+function speedCurve(p) {
+  if (p < 20) return 90;   // slow start
+  if (p < 70) return 20;   // fast middle
+  return 80;               // slow end
+}
 
-  progressText.innerText = progress + "%";
+function loop() {
+  let interval = speedCurve(progress);
 
-  if (progress % 20 === 0 && msgIndex < messages.length - 1) {
-    msgIndex++;
-    bootText.innerText = messages[msgIndex];
-  }
+  setTimeout(() => {
+    progress++;
 
-  if (progress >= 100) {
-    clearInterval(interval);
+    progressText.innerText = progress + "%";
 
-    setTimeout(() => {
+    if (progress % 20 === 0 && msg < messages.length - 1) {
+      msg++;
+      bootText.innerText = messages[msg];
+    }
+
+    if (progress >= 100) {
       boot.style.opacity = "0";
-      boot.style.transition = "1s";
-
       setTimeout(() => {
         boot.style.display = "none";
         container.style.display = "block";
-      }, 1000);
+      }, 800);
+      return;
+    }
 
-    }, 500);
-  }
-
-}, 80);
-
-/* ================= DROPDOWN ================= */
-function toggle(btn) {
-  const content = btn.nextElementSibling;
-  content.style.display =
-    content.style.display === "block" ? "none" : "block";
+    loop();
+  }, interval);
 }
 
-/* ================= MATRIX ================= */
+loop();
+
+/* DROPDOWNS */
+function toggle(btn) {
+  const c = btn.nextElementSibling;
+  c.style.display = c.style.display === "block" ? "none" : "block";
+}
+
+function toggleSub(btn) {
+  const c = btn.nextElementSibling;
+  c.style.display = c.style.display === "block" ? "none" : "block";
+}
+
+/* MATRIX */
 const canvas = document.getElementById("matrix");
 const ctx = canvas.getContext("2d");
 
@@ -262,32 +285,31 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 const chars = "01";
-const fontSize = 14;
-const columns = canvas.width / fontSize;
-const drops = Array(Math.floor(columns)).fill(1);
+const size = 14;
+const cols = canvas.width / size;
+const drops = Array(Math.floor(cols)).fill(1);
 
 function draw() {
-  ctx.fillStyle = "rgba(5, 0, 8, 0.08)";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "rgba(5,0,8,0.08)";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
 
   ctx.fillStyle = "#ff1e2f";
-  ctx.font = fontSize + "px monospace";
+  ctx.font = size + "px monospace";
 
   for (let i = 0; i < drops.length; i++) {
-    const text = chars[Math.floor(Math.random() * chars.length)];
-    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+    const t = chars[Math.floor(Math.random()*chars.length)];
+    ctx.fillText(t, i*size, drops[i]*size);
 
-    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+    if (drops[i]*size > canvas.height && Math.random() > 0.975) {
       drops[i] = 0;
     }
-
     drops[i]++;
   }
 }
 
 setInterval(draw, 35);
-
 window.addEventListener("resize", () => location.reload());
+
 </script>
 
 </body>
