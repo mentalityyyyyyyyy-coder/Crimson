@@ -21,7 +21,7 @@ body {
   color: #ff2a3d;
 }
 
-/* ===== Binary Background ===== */
+/* ===== MATRIX BACKGROUND ===== */
 canvas {
   position: fixed;
   top: 0;
@@ -29,13 +29,13 @@ canvas {
   z-index: -1;
 }
 
-/* ===== Main Container ===== */
+/* ===== MAIN UI ===== */
 .container {
   text-align: center;
   padding-top: 80px;
 }
 
-/* ===== Title ===== */
+/* ===== TITLE ===== */
 h1 {
   font-size: 72px;
   letter-spacing: 12px;
@@ -43,7 +43,7 @@ h1 {
   text-shadow:
     0 0 10px #ff1e2f,
     0 0 25px #ff1e2f,
-    0 0 60px #b3001b;
+    0 0 60px #8b0012;
   animation: glow 2s infinite alternate;
 }
 
@@ -54,48 +54,110 @@ h1 {
   opacity: 0.9;
 }
 
-/* ===== Glow Animation ===== */
 @keyframes glow {
   from { text-shadow: 0 0 10px #ff1e2f; }
-  to { text-shadow: 0 0 30px #ff1e2f, 0 0 80px #8b0012; }
+  to { text-shadow: 0 0 35px #ff1e2f, 0 0 80px #8b0012; }
 }
 
-/* ===== Dropdown Boxes ===== */
+/* ===== DROPDOWN ===== */
 .dropdown {
   width: 60%;
   margin: 30px auto;
-  border: 1px solid #ff1e2f;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 0 15px #ff1e2f;
-  transition: 0.3s;
+  position: relative;
 }
 
-.dropdown:hover {
-  box-shadow: 0 0 35px #ff1e2f;
-  transform: scale(1.02);
-}
-
+/* ===== CYBERPUNK BUTTON ===== */
 .dropdown button {
   width: 100%;
-  padding: 20px;
-  background: rgba(10,0,5,0.85);
+  padding: 18px 22px;
+  background: linear-gradient(135deg, rgba(20,0,10,0.95), rgba(40,0,15,0.85));
   color: #ff2a3d;
-  border: none;
   font-size: 20px;
+  border: 1px solid rgba(255,30,47,0.6);
   cursor: pointer;
   text-align: left;
+
+  /* angled cyberpunk shape */
+  clip-path: polygon(
+    0 0,
+    92% 0,
+    100% 35%,
+    100% 100%,
+    8% 100%,
+    0 65%
+  );
+
+  position: relative;
+  overflow: hidden;
+
+  box-shadow:
+    0 0 10px rgba(255,30,47,0.25),
+    inset 0 0 10px rgba(255,30,47,0.15);
+
   transition: 0.3s;
 }
 
-.dropdown button:hover {
-  background: rgba(255,0,40,0.1);
+/* glow pulse */
+.dropdown button::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,30,47,0.25), transparent 60%);
+  opacity: 0;
+  transition: 0.4s;
 }
 
+/* scan line */
+.dropdown button::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -30%;
+  width: 30%;
+  height: 200%;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(255,30,47,0.4),
+    transparent
+  );
+  transform: rotate(25deg);
+  opacity: 0;
+}
+
+/* hover effects */
+.dropdown button:hover {
+  transform: scale(1.03);
+  box-shadow:
+    0 0 25px rgba(255,30,47,0.6),
+    inset 0 0 15px rgba(255,30,47,0.3);
+}
+
+.dropdown button:hover::before {
+  opacity: 1;
+}
+
+.dropdown button:hover::after {
+  opacity: 1;
+  animation: scan 1.2s infinite;
+}
+
+@keyframes scan {
+  0% { left: -40%; }
+  100% { left: 120%; }
+}
+
+/* ===== DROPDOWN CONTENT ===== */
 .dropdown-content {
   display: none;
-  background: rgba(20,0,10,0.9);
+  background: rgba(20,0,10,0.92);
   padding: 15px;
+  border-left: 2px solid #ff1e2f;
+  border-right: 2px solid #ff1e2f;
+  box-shadow: 0 0 20px rgba(255,30,47,0.2);
   animation: slide 0.25s ease-in-out;
 }
 
@@ -104,7 +166,7 @@ h1 {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Items */
+/* ITEMS */
 .item {
   padding: 10px;
   margin: 5px 0;
@@ -112,6 +174,7 @@ h1 {
   text-align: left;
   cursor: pointer;
   color: #ff8a93;
+  transition: 0.2s;
 }
 
 .item:hover {
@@ -119,7 +182,7 @@ h1 {
   color: white;
 }
 
-/* scanlines */
+/* scanlines overlay */
 body::before {
   content: "";
   position: fixed;
@@ -183,7 +246,7 @@ function toggle(btn) {
     content.style.display === "block" ? "none" : "block";
 }
 
-/* ===== RED MATRIX BACKGROUND ===== */
+/* ===== RED BINARY MATRIX ===== */
 const canvas = document.getElementById("matrix");
 const ctx = canvas.getContext("2d");
 
