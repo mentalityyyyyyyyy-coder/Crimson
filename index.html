@@ -1,230 +1,217 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>CRIMSON</title>
 
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-
 <style>
-body {
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap');
+
+* {
   margin: 0;
-  background: #050505;
-  color: #ff003c;
+  padding: 0;
+  box-sizing: border-box;
   font-family: 'JetBrains Mono', monospace;
+}
+
+body {
+  background: #05010a;
   overflow-x: hidden;
+  color: #00fff2;
 }
 
-/* grid background */
-.bg {
+/* ===== Binary Background ===== */
+canvas {
   position: fixed;
-  width: 100%;
-  height: 100%;
-  background:
-    linear-gradient(rgba(255,0,60,0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,0,60,0.06) 1px, transparent 1px);
-  background-size: 40px 40px;
-  animation: move 12s linear infinite;
-  z-index: -2;
-}
-
-@keyframes move {
-  from { transform: translateY(0); }
-  to { transform: translateY(40px); }
-}
-
-.glow {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle at center, rgba(255,0,60,0.15), transparent 70%);
+  top: 0;
+  left: 0;
   z-index: -1;
 }
 
-/* header */
-.header {
+/* ===== Main Container ===== */
+.container {
   text-align: center;
-  margin-top: 8vh;
+  padding-top: 80px;
 }
 
-.title {
-  font-size: 60px;
-  letter-spacing: 6px;
-  position: relative;
-  display: inline-block;
-}
-
-.title::before,
-.title::after {
-  content: "CRIMSON";
-  position: absolute;
-  left: 0;
-}
-
-.title::before {
-  color: cyan;
-  transform: translateX(-2px);
-  animation: glitch1 2s infinite;
-}
-
-.title::after {
-  color: magenta;
-  transform: translateX(2px);
-  animation: glitch2 2s infinite;
-}
-
-@keyframes glitch1 {
-  0%,100% { clip-path: inset(0 0 0 0); }
-  50% { clip-path: inset(0 0 60% 0); }
-}
-
-@keyframes glitch2 {
-  0%,100% { clip-path: inset(0 0 0 0); }
-  50% { clip-path: inset(60% 0 0 0); }
+/* ===== Title ===== */
+h1 {
+  font-size: 70px;
+  letter-spacing: 10px;
+  color: #ff003c;
+  text-shadow:
+    0 0 10px #ff003c,
+    0 0 20px #ff003c,
+    0 0 40px #ff003c;
+  animation: glow 2s infinite alternate;
 }
 
 .subtitle {
-  color: #aaa;
   margin-top: 10px;
+  font-size: 18px;
+  color: #00fff2;
+  opacity: 0.8;
 }
 
-/* dropdown container */
-.menu {
-  width: 60%;
-  margin: 50px auto;
+/* ===== Glow Animation ===== */
+@keyframes glow {
+  from { text-shadow: 0 0 10px #ff003c; }
+  to { text-shadow: 0 0 30px #ff003c, 0 0 60px #ff003c; }
 }
 
-/* dropdown box */
+/* ===== Dropdown Boxes ===== */
 .dropdown {
-  border: 1px solid #ff003c;
-  margin-bottom: 15px;
+  width: 60%;
+  margin: 30px auto;
+  border: 1px solid #00fff2;
   border-radius: 10px;
   overflow: hidden;
-  background: rgba(0,0,0,0.6);
-  box-shadow: 0 0 15px #ff003c33;
+  box-shadow: 0 0 15px #00fff2;
+  transition: 0.3s;
 }
 
-.dropdown-header {
-  padding: 15px;
+.dropdown:hover {
+  box-shadow: 0 0 30px #00fff2;
+  transform: scale(1.02);
+}
+
+.dropdown button {
+  width: 100%;
+  padding: 20px;
+  background: rgba(0,0,0,0.7);
+  color: #00fff2;
+  border: none;
+  font-size: 20px;
   cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  transition: 0.2s;
+  text-align: left;
 }
 
-.dropdown-header:hover {
+.dropdown-content {
+  display: none;
+  background: rgba(10,10,20,0.9);
+  padding: 15px;
+  animation: slide 0.3s ease-in-out;
+}
+
+@keyframes slide {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Links placeholder */
+.item {
+  padding: 10px;
+  margin: 5px 0;
+  border-left: 2px solid #ff003c;
+  text-align: left;
+  cursor: pointer;
+}
+
+.item:hover {
   background: rgba(255,0,60,0.1);
 }
 
-.arrow {
-  transition: transform 0.3s;
-}
-
-/* content */
-.dropdown-content {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.4s ease;
-  padding: 0 15px;
-  color: #aaa;
-}
-
-/* active state */
-.dropdown.active .dropdown-content {
-  max-height: 200px;
-  padding-bottom: 15px;
-}
-
-.dropdown.active .arrow {
-  transform: rotate(180deg);
-}
-
-/* binary strip */
-.binary {
-  text-align: center;
-  color: #ff003c55;
-  margin-top: 20px;
-  font-size: 12px;
+/* small scanline effect */
+body::before {
+  content: "";
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.03),
+    rgba(255,255,255,0.03) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  pointer-events: none;
 }
 </style>
 </head>
 
 <body>
 
-<div class="bg"></div>
-<div class="glow"></div>
+<canvas id="matrix"></canvas>
 
-<div class="header">
-  <div class="title">CRIMSON</div>
-  <div class="subtitle">the tools you ACTUALLY need.</div>
-</div>
+<div class="container">
+  <h1>CRIMSON</h1>
+  <div class="subtitle">Tools that you ACTUALLY need.</div>
 
-<div class="binary" id="binary"></div>
-
-<div class="menu">
-
+  <!-- GENERAL -->
   <div class="dropdown">
-    <div class="dropdown-header">
-      General
-      <span class="arrow">▼</span>
-    </div>
+    <button onclick="toggle(this)">▶ General</button>
     <div class="dropdown-content">
-      Scanner<br>
-      Analyzer<br>
-      Logs
+      <div class="item">IP Lookup Tool</div>
+      <div class="item">Password Strength Checker</div>
+      <div class="item">Hash Generator</div>
     </div>
   </div>
 
+  <!-- GAMES -->
   <div class="dropdown">
-    <div class="dropdown-header">
-      Games
-      <span class="arrow">▼</span>
-    </div>
+    <button onclick="toggle(this)">▶ Games</button>
     <div class="dropdown-content">
-      Mini Games<br>
-      Tournaments<br>
-      Sandbox Tools
+      <div class="item">Cyber Escape Puzzle</div>
+      <div class="item">Terminal Hacker Sim</div>
+      <div class="item">Code Guess Game</div>
     </div>
   </div>
 
+  <!-- FUN -->
   <div class="dropdown">
-    <div class="dropdown-header">
-      Fun
-      <span class="arrow">▼</span>
-    </div>
+    <button onclick="toggle(this)">▶ Fun</button>
     <div class="dropdown-content">
-      Random Generator<br>
-      Memes<br>
-      Experiments
+      <div class="item">Matrix Text Generator</div>
+      <div class="item">Glitch Text Maker</div>
+      <div class="item">ASCII Art Tool</div>
     </div>
   </div>
-
 </div>
 
 <script>
-// dropdown logic
-document.querySelectorAll('.dropdown').forEach(drop => {
-  drop.querySelector('.dropdown-header').addEventListener('click', () => {
-    drop.classList.toggle('active');
-  });
-});
-
-// binary animation
-const bin = document.getElementById("binary");
-
-function randomBinary() {
-  let str = "";
-  for (let i = 0; i < 50; i++) {
-    str += Math.random() > 0.5 ? "1" : "0";
-  }
-  return str;
+// Dropdown toggle
+function toggle(btn) {
+  const content = btn.nextElementSibling;
+  content.style.display =
+    content.style.display === "block" ? "none" : "block";
 }
 
-setInterval(() => {
-  bin.textContent = randomBinary();
-}, 200);
+/* ===== Matrix / Binary Background ===== */
+const canvas = document.getElementById("matrix");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const chars = "01";
+const fontSize = 14;
+const columns = canvas.width / fontSize;
+
+const drops = Array(Math.floor(columns)).fill(1);
+
+function draw() {
+  ctx.fillStyle = "rgba(5, 1, 10, 0.08)";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.fillStyle = "#00fff2";
+  ctx.font = fontSize + "px monospace";
+
+  for (let i = 0; i < drops.length; i++) {
+    const text = chars[Math.floor(Math.random() * chars.length)];
+    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+      drops[i] = 0;
+    }
+
+    drops[i]++;
+  }
+}
+
+setInterval(draw, 35);
+
+window.addEventListener("resize", () => location.reload());
 </script>
 
 </body>
