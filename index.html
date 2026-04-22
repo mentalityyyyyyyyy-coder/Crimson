@@ -15,7 +15,7 @@
   font-family: 'JetBrains Mono', monospace;
 }
 
-/* ================= BOOT ================= */
+/* ===== BOOT SCREEN ===== */
 #boot {
   position: fixed;
   inset: 0;
@@ -35,7 +35,7 @@
 }
 
 #bootText {
-  margin-top: 20px;
+  margin-top: 15px;
   font-size: 14px;
   opacity: 0.8;
 }
@@ -45,7 +45,7 @@
   font-size: 18px;
 }
 
-/* ================= MAIN ================= */
+/* ===== MAIN SITE ===== */
 body {
   background: #050008;
   overflow-x: hidden;
@@ -59,13 +59,13 @@ canvas {
   z-index: -1;
 }
 
+/* fade in */
 .container {
   text-align: center;
   padding-top: 80px;
   display: none;
-
   opacity: 0;
-  transform: translateY(10px);
+  transform: translateY(15px);
 }
 
 .container.show {
@@ -85,11 +85,12 @@ canvas {
   }
 }
 
+/* TITLE */
 h1 {
   font-size: 72px;
   letter-spacing: 12px;
   color: #ff1e2f;
-  text-shadow: 0 0 10px #ff1e2f, 0 0 40px #8b0012;
+  text-shadow: 0 0 10px #ff1e2f, 0 0 50px #8b0012;
 }
 
 .subtitle {
@@ -98,12 +99,13 @@ h1 {
   color: #ff5a6a;
 }
 
-/* ================= DROPDOWNS ================= */
+/* ===== DROPDOWNS ===== */
 .dropdown {
   width: 60%;
   margin: 30px auto;
 }
 
+/* cyberpunk button */
 .dropdown button {
   width: 100%;
   padding: 18px;
@@ -115,22 +117,36 @@ h1 {
   text-align: left;
 
   clip-path: polygon(0 0, 92% 0, 100% 35%, 100% 100%, 8% 100%, 0 65%);
+  position: relative;
+  overflow: hidden;
+  transition: 0.3s;
 }
 
+.dropdown button:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 30px rgba(255,30,47,0.6);
+}
+
+/* dropdown content */
 .dropdown-content {
   display: none;
   background: rgba(20,0,10,0.92);
   padding: 12px;
   border-left: 2px solid #ff1e2f;
+  animation: drop 0.3s ease;
 }
 
-/* items */
+@keyframes drop {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 .item {
   padding: 10px;
   margin: 6px 0;
   border-left: 2px solid #ff1e2f;
-  cursor: pointer;
   color: #ff8a93;
+  cursor: pointer;
 }
 
 .item:hover {
@@ -138,22 +154,9 @@ h1 {
   color: white;
 }
 
-/* SUB DROPDOWN (ROBLOX FIX) */
-.sub-dropdown button {
-  width: 100%;
-  padding: 12px;
-  margin-top: 8px;
-  background: rgba(40,0,15,0.8);
-  color: #ff4b5c;
-  border: 1px solid rgba(255,30,47,0.4);
-  cursor: pointer;
-  text-align: left;
-  clip-path: polygon(0 0, 90% 0, 100% 40%, 100% 100%, 10% 100%, 0 60%);
-}
-
-.sub-content {
-  display: none;
-  padding-left: 12px;
+a {
+  color: inherit;
+  text-decoration: none;
 }
 
 /* scanlines */
@@ -176,7 +179,7 @@ body::before {
 
 <body>
 
-<!-- BOOT SCREEN -->
+<!-- BOOT -->
 <div id="boot">
   <h1>CRIMSON SYSTEM</h1>
   <div id="bootText">Initializing core...</div>
@@ -204,10 +207,10 @@ body::before {
     <button onclick="toggle(this)">▶ Games</button>
     <div class="dropdown-content">
 
-      <!-- ROBLOX DROPDOWN FIXED -->
-      <div class="sub-dropdown">
-        <button onclick="toggleSub(this)">▶ ROBLOX</button>
-        <div class="sub-content">
+      <!-- ROBLOX DROPDOWN -->
+      <div class="dropdown">
+        <button onclick="toggle(this)">▶ Roblox Tools</button>
+        <div class="dropdown-content">
           <div class="item"><a href="https://getsolara.dev/" target="_blank">Solara</a></div>
           <div class="item"><a href="https://www.xeno.now/" target="_blank">Xeno</a></div>
           <div class="item"><a href="https://realvelocity.xyz/" target="_blank">Velocity</a></div>
@@ -215,9 +218,9 @@ body::before {
         </div>
       </div>
 
-      <div class="item">MINECRAFT</div>
-      <div class="item">FORTNITE</div>
-      <div class="item">GEOMETRY DASH</div>
+      <div class="item">Minecraft</div>
+      <div class="item">Fortnite</div>
+      <div class="item">Geometry Dash</div>
 
     </div>
   </div>
@@ -235,35 +238,32 @@ body::before {
 
 <script>
 
-/* ===== SMART BOOT SPEED (SLOW → FAST → SLOW) ===== */
+/* ===== BOOT ANIMATION (slow → fast → slow) ===== */
 let progress = 0;
 const progressText = document.getElementById("progress");
 const boot = document.getElementById("boot");
 const container = document.querySelector(".container");
-
 const bootText = document.getElementById("bootText");
+
 const messages = [
   "Initializing core...",
-  "Loading encryption layer...",
-  "Syncing modules...",
-  "Injecting UI systems...",
+  "Loading modules...",
+  "Syncing system...",
+  "Injecting UI...",
   "Finalizing access..."
 ];
 
 let msg = 0;
 
-function speedCurve(p) {
-  if (p < 20) return 90;   // slow start
-  if (p < 70) return 20;   // fast middle
-  return 80;               // slow end
+function speed(p) {
+  if (p < 25) return 80;
+  if (p < 75) return 25;
+  return 90;
 }
 
 function loop() {
-  let interval = speedCurve(progress);
-
   setTimeout(() => {
     progress++;
-
     progressText.innerText = progress + "%";
 
     if (progress % 20 === 0 && msg < messages.length - 1) {
@@ -272,32 +272,25 @@ function loop() {
     }
 
     if (progress >= 100) {
-      boot.style.opacity = "0";
-      setTimeout(() => {
-        boot.style.display = "none";
-        container.style.display = "block";
-      }, 800);
+      boot.style.display = "none";
+      container.style.display = "block";
+      setTimeout(() => container.classList.add("show"), 50);
       return;
     }
 
     loop();
-  }, interval);
+  }, speed(progress));
 }
 
 loop();
 
-/* DROPDOWNS */
+/* dropdown */
 function toggle(btn) {
   const c = btn.nextElementSibling;
   c.style.display = c.style.display === "block" ? "none" : "block";
 }
 
-function toggleSub(btn) {
-  const c = btn.nextElementSibling;
-  c.style.display = c.style.display === "block" ? "none" : "block";
-}
-
-/* MATRIX */
+/* matrix */
 const canvas = document.getElementById("matrix");
 const ctx = canvas.getContext("2d");
 
