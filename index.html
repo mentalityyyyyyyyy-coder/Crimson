@@ -10,31 +10,30 @@
 <style>
 body {
   margin: 0;
-  background: #030303;
+  background: #050505;
   color: #ff003c;
   font-family: 'JetBrains Mono', monospace;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
-/* animated grid background */
+/* grid background */
 .bg {
   position: fixed;
   width: 100%;
   height: 100%;
   background:
-    linear-gradient(rgba(255,0,60,0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,0,60,0.05) 1px, transparent 1px);
+    linear-gradient(rgba(255,0,60,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,0,60,0.06) 1px, transparent 1px);
   background-size: 40px 40px;
-  animation: moveGrid 10s linear infinite;
+  animation: move 12s linear infinite;
   z-index: -2;
 }
 
-@keyframes moveGrid {
+@keyframes move {
   from { transform: translateY(0); }
   to { transform: translateY(40px); }
 }
 
-/* glow overlay */
 .glow {
   position: fixed;
   width: 100%;
@@ -43,13 +42,12 @@ body {
   z-index: -1;
 }
 
-/* container */
-.container {
+/* header */
+.header {
   text-align: center;
-  margin-top: 12vh;
+  margin-top: 8vh;
 }
 
-/* title */
 .title {
   font-size: 60px;
   letter-spacing: 6px;
@@ -57,7 +55,6 @@ body {
   display: inline-block;
 }
 
-/* cleaner glitch */
 .title::before,
 .title::after {
   content: "CRIMSON";
@@ -66,13 +63,13 @@ body {
 }
 
 .title::before {
-  color: #00ffff;
+  color: cyan;
   transform: translateX(-2px);
   animation: glitch1 2s infinite;
 }
 
 .title::after {
-  color: #ff00ff;
+  color: magenta;
   transform: translateX(2px);
   animation: glitch2 2s infinite;
 }
@@ -87,47 +84,69 @@ body {
   50% { clip-path: inset(60% 0 0 0); }
 }
 
-/* subtitle */
 .subtitle {
   color: #aaa;
   margin-top: 10px;
-  margin-bottom: 30px;
 }
 
-/* binary typing */
-.binary {
-  font-size: 14px;
-  color: #ff003c88;
-  height: 20px;
-  margin-bottom: 40px;
+/* dropdown container */
+.menu {
+  width: 60%;
+  margin: 50px auto;
 }
 
-/* panel */
-.panel {
-  display: inline-block;
-  padding: 25px;
+/* dropdown box */
+.dropdown {
   border: 1px solid #ff003c;
-  border-radius: 12px;
-  box-shadow: 0 0 20px #ff003c33;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  overflow: hidden;
   background: rgba(0,0,0,0.6);
+  box-shadow: 0 0 15px #ff003c33;
 }
 
-/* buttons */
-button {
-  background: transparent;
-  border: 1px solid #ff003c;
-  color: #ff003c;
-  padding: 10px 20px;
-  margin: 10px;
+.dropdown-header {
+  padding: 15px;
   cursor: pointer;
-  font-family: inherit;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   transition: 0.2s;
 }
 
-button:hover {
-  background: #ff003c;
-  color: black;
-  box-shadow: 0 0 15px #ff003c;
+.dropdown-header:hover {
+  background: rgba(255,0,60,0.1);
+}
+
+.arrow {
+  transition: transform 0.3s;
+}
+
+/* content */
+.dropdown-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+  padding: 0 15px;
+  color: #aaa;
+}
+
+/* active state */
+.dropdown.active .dropdown-content {
+  max-height: 200px;
+  padding-bottom: 15px;
+}
+
+.dropdown.active .arrow {
+  transform: rotate(180deg);
+}
+
+/* binary strip */
+.binary {
+  text-align: center;
+  color: #ff003c55;
+  margin-top: 20px;
+  font-size: 12px;
 }
 </style>
 </head>
@@ -137,61 +156,75 @@ button:hover {
 <div class="bg"></div>
 <div class="glow"></div>
 
-<div class="container">
-  <h1 class="title">CRIMSON</h1>
-  <p class="subtitle">the tools you ACTUALLY need.</p>
+<div class="header">
+  <div class="title">CRIMSON</div>
+  <div class="subtitle">the tools you ACTUALLY need.</div>
+</div>
 
-  <div class="binary" id="binary"></div>
+<div class="binary" id="binary"></div>
 
-  <div class="panel">
-    <button>Scanner</button>
-    <button>Analyzer</button>
-    <button>Logs</button>
-    <button>Tools</button>
+<div class="menu">
+
+  <div class="dropdown">
+    <div class="dropdown-header">
+      General
+      <span class="arrow">▼</span>
+    </div>
+    <div class="dropdown-content">
+      Scanner<br>
+      Analyzer<br>
+      Logs
+    </div>
   </div>
+
+  <div class="dropdown">
+    <div class="dropdown-header">
+      Games
+      <span class="arrow">▼</span>
+    </div>
+    <div class="dropdown-content">
+      Mini Games<br>
+      Tournaments<br>
+      Sandbox Tools
+    </div>
+  </div>
+
+  <div class="dropdown">
+    <div class="dropdown-header">
+      Fun
+      <span class="arrow">▼</span>
+    </div>
+    <div class="dropdown-content">
+      Random Generator<br>
+      Memes<br>
+      Experiments
+    </div>
+  </div>
+
 </div>
 
 <script>
-const el = document.getElementById("binary");
+// dropdown logic
+document.querySelectorAll('.dropdown').forEach(drop => {
+  drop.querySelector('.dropdown-header').addEventListener('click', () => {
+    drop.classList.toggle('active');
+  });
+});
 
-function randomBinary(length) {
+// binary animation
+const bin = document.getElementById("binary");
+
+function randomBinary() {
   let str = "";
-  for (let i = 0; i < length; i++) {
+  for (let i = 0; i < 50; i++) {
     str += Math.random() > 0.5 ? "1" : "0";
   }
   return str;
 }
 
-function animateBinary() {
-  let text = randomBinary(40);
-  let i = 0;
-
-  function type() {
-    if (i <= text.length) {
-      el.textContent = text.slice(0, i);
-      i++;
-      setTimeout(type, 30);
-    } else {
-      setTimeout(() => {
-        erase();
-      }, 500);
-    }
-  }
-
-  function erase() {
-    if (i >= 0) {
-      el.textContent = text.slice(0, i);
-      i--;
-      setTimeout(erase, 15);
-    } else {
-      animateBinary();
-    }
-  }
-
-  type();
-}
-
-animateBinary();
+setInterval(() => {
+  bin.textContent = randomBinary();
+}, 200);
 </script>
 
 </body>
