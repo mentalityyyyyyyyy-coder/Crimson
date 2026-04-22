@@ -63,6 +63,26 @@ canvas {
   text-align: center;
   padding-top: 80px;
   display: none;
+
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.container.show {
+  animation: pageIn 1.2s ease forwards;
+}
+
+@keyframes pageIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
 }
 
 h1 {
