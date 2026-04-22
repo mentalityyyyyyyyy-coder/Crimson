@@ -15,7 +15,7 @@
   font-family: 'JetBrains Mono', monospace;
 }
 
-/* ===== BOOT SCREEN ===== */
+/* ===== BOOT ===== */
 #boot {
   position: fixed;
   inset: 0;
@@ -45,7 +45,7 @@
   font-size: 18px;
 }
 
-/* ===== MAIN SITE ===== */
+/* ===== MAIN ===== */
 body {
   background: #050008;
   overflow-x: hidden;
@@ -59,7 +59,6 @@ canvas {
   z-index: -1;
 }
 
-/* fade in */
 .container {
   text-align: center;
   padding-top: 80px;
@@ -73,16 +72,8 @@ canvas {
 }
 
 @keyframes pageIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-    filter: blur(6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-    filter: blur(0);
-  }
+  from { opacity: 0; transform: translateY(20px); filter: blur(6px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
 }
 
 /* TITLE */
@@ -105,7 +96,6 @@ h1 {
   margin: 30px auto;
 }
 
-/* cyberpunk button */
 .dropdown button {
   width: 100%;
   padding: 18px;
@@ -117,28 +107,13 @@ h1 {
   text-align: left;
 
   clip-path: polygon(0 0, 92% 0, 100% 35%, 100% 100%, 8% 100%, 0 65%);
-  position: relative;
-  overflow: hidden;
-  transition: 0.3s;
 }
 
-.dropdown button:hover {
-  transform: scale(1.03);
-  box-shadow: 0 0 30px rgba(255,30,47,0.6);
-}
-
-/* dropdown content */
 .dropdown-content {
   display: none;
   background: rgba(20,0,10,0.92);
   padding: 12px;
   border-left: 2px solid #ff1e2f;
-  animation: drop 0.3s ease;
-}
-
-@keyframes drop {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
 }
 
 .item {
@@ -146,7 +121,6 @@ h1 {
   margin: 6px 0;
   border-left: 2px solid #ff1e2f;
   color: #ff8a93;
-  cursor: pointer;
 }
 
 .item:hover {
@@ -207,7 +181,7 @@ body::before {
     <button onclick="toggle(this)">▶ Games</button>
     <div class="dropdown-content">
 
-      <!-- ROBLOX DROPDOWN -->
+      <!-- ROBLOX -->
       <div class="dropdown">
         <button onclick="toggle(this)">▶ Roblox Tools</button>
         <div class="dropdown-content">
@@ -218,7 +192,23 @@ body::before {
         </div>
       </div>
 
-      <div class="item">Minecraft</div>
+      <!-- MINECRAFT -->
+      <div class="dropdown">
+        <button onclick="toggle(this)">▶ Minecraft Tools</button>
+        <div class="dropdown-content">
+
+          <div class="item"><a href="https://meteorclient.com" target="_blank">Meteor Client</a></div>
+          <div class="item"><a href="https://wurstclient.net" target="_blank">Wurst Client</a></div>
+          <div class="item"><a href="https://liquidbounce.net" target="_blank">LiquidBounce</a></div>
+
+          <!-- extra free legit tools -->
+          <div class="item"><a href="https://fabricmc.net/" target="_blank">Fabric Loader (mod base)</a></div>
+          <div class="item"><a href="https://optifine.net/" target="_blank">OptiFine (performance)</a></div>
+          <div class="item"><a href="https://modrinth.com/" target="_blank">Modrinth Mods</a></div>
+
+        </div>
+      </div>
+
       <div class="item">Fortnite</div>
       <div class="item">Geometry Dash</div>
 
@@ -238,40 +228,40 @@ body::before {
 
 <script>
 
-/* ===== BOOT ANIMATION (slow → fast → slow) ===== */
+/* BOOT SPEED */
 let progress = 0;
-const progressText = document.getElementById("progress");
 const boot = document.getElementById("boot");
 const container = document.querySelector(".container");
+const progressText = document.getElementById("progress");
 const bootText = document.getElementById("bootText");
 
-const messages = [
+const msgs = [
   "Initializing core...",
   "Loading modules...",
-  "Syncing system...",
-  "Injecting UI...",
-  "Finalizing access..."
+  "Decrypting UI...",
+  "Syncing systems...",
+  "Finalizing..."
 ];
 
-let msg = 0;
+let m = 0;
 
-function speed(p) {
-  if (p < 25) return 80;
-  if (p < 75) return 25;
+function speed(p){
+  if(p < 25) return 80;
+  if(p < 75) return 25;
   return 90;
 }
 
-function loop() {
+function loop(){
   setTimeout(() => {
     progress++;
     progressText.innerText = progress + "%";
 
-    if (progress % 20 === 0 && msg < messages.length - 1) {
-      msg++;
-      bootText.innerText = messages[msg];
+    if(progress % 20 === 0 && m < msgs.length-1){
+      m++;
+      bootText.innerText = msgs[m];
     }
 
-    if (progress >= 100) {
+    if(progress >= 100){
       boot.style.display = "none";
       container.style.display = "block";
       setTimeout(() => container.classList.add("show"), 50);
@@ -285,7 +275,7 @@ function loop() {
 loop();
 
 /* dropdown */
-function toggle(btn) {
+function toggle(btn){
   const c = btn.nextElementSibling;
   c.style.display = c.style.display === "block" ? "none" : "block";
 }
@@ -302,26 +292,26 @@ const size = 14;
 const cols = canvas.width / size;
 const drops = Array(Math.floor(cols)).fill(1);
 
-function draw() {
+function draw(){
   ctx.fillStyle = "rgba(5,0,8,0.08)";
   ctx.fillRect(0,0,canvas.width,canvas.height);
 
   ctx.fillStyle = "#ff1e2f";
   ctx.font = size + "px monospace";
 
-  for (let i = 0; i < drops.length; i++) {
-    const t = chars[Math.floor(Math.random()*chars.length)];
+  for(let i=0;i<drops.length;i++){
+    const t = chars[Math.floor(Math.random()*2)];
     ctx.fillText(t, i*size, drops[i]*size);
 
-    if (drops[i]*size > canvas.height && Math.random() > 0.975) {
-      drops[i] = 0;
+    if(drops[i]*size > canvas.height && Math.random()>0.975){
+      drops[i]=0;
     }
     drops[i]++;
   }
 }
 
-setInterval(draw, 35);
-window.addEventListener("resize", () => location.reload());
+setInterval(draw,35);
+window.addEventListener("resize", ()=>location.reload());
 
 </script>
 
