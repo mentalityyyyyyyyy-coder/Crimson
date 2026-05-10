@@ -238,7 +238,18 @@ body::before {
 <div class="container">
   <h1>CRIMSON</h1>
   <div class="subtitle">Tools that you ACTUALLY need.</div>
-
+<div style="width:60%; margin:20px auto;">
+  <input id="search" type="text" placeholder="Search tools..."
+  style="
+    width:100%;
+    padding:14px;
+    background: rgba(20,0,10,0.9);
+    border:1px solid rgba(255,30,47,0.5);
+    color:#ff2a3d;
+    outline:none;
+    font-family:'JetBrains Mono', monospace;
+  ">
+</div>
 <!-- GENERAL -->
 <div class="dropdown">
   <button onclick="toggle(this)">▶ General (Cybersecurity Tools)</button>
@@ -396,8 +407,25 @@ function draw(){
 }
 
 setInterval(draw,35);
-window.addEventListener("resize", ()=>location.reload());
+window.addEventListener("resize", () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
+/* search */
+document.getElementById("search").addEventListener("input", function(){
 
+  const q = this.value.toLowerCase();
+
+  document.querySelectorAll(".item").forEach(item => {
+
+    item.style.display =
+      item.innerText.toLowerCase().includes(q)
+      ? "block"
+      : "none";
+
+  });
+
+});
 </script>
 <div style="
   text-align:center;
