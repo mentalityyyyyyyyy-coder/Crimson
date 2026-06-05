@@ -8,36 +8,36 @@
 body {
     margin: 0;
     background: black;
-    font-family: Arial, sans-serif;
 }
 
-/* LOADER SCREEN */
+/* LOADER */
 #loader {
     position: fixed;
     inset: 0;
-    background: radial-gradient(circle at center, #111 0%, black 70%);
+    background: radial-gradient(circle at center, #111, black 70%);
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
     z-index: 9999;
     transition: opacity 1s ease, transform 1s ease;
 }
 
-/* SPINNING CHIP */
+/* CHIP IMAGE */
 .chip {
-    width: 150px;
-    animation: spin 1.2s linear infinite, float 2s ease-in-out infinite;
-    filter: drop-shadow(0 0 25px rgba(255, 180, 80, 0.6));
+    width: 160px;
+    border-radius: 50%;
+    animation: spin 1s linear infinite, float 2s ease-in-out infinite;
+    filter: drop-shadow(0 0 25px rgba(255, 200, 120, 0.6));
 }
 
-/* LOADING TEXT */
+/* TEXT */
 .text {
     margin-top: 20px;
     color: #aaa;
+    font-family: Arial, sans-serif;
     letter-spacing: 3px;
     font-size: 14px;
-    opacity: 0.8;
 }
 
 /* ANIMATIONS */
@@ -47,8 +47,8 @@ body {
 }
 
 @keyframes float {
-    0%, 100% { transform: translateY(0px) rotate(0deg); }
-    50% { transform: translateY(-10px) rotate(180deg); }
+    0%,100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
 }
 
 /* FADE OUT */
@@ -64,7 +64,7 @@ body {
 
 <!-- LOADER -->
 <div id="loader">
-    <img src="chip.png" class="chip" alt="chip">
+    <img class="chip" src="https://i1.sndcdn.com/avatars-dDNxsnFAu6GVU6CM-5ZtiLg-t240x240.jpg">
     <div class="text">LOADING...</div>
 
     <audio id="music" autoplay loop>
@@ -72,7 +72,7 @@ body {
     </audio>
 </div>
 
-<!-- YOUR WEBSITE CONTENT -->
+<!-- CONTENT -->
 <div id="content" style="color:white; padding:40px;">
     <h1>Welcome</h1>
 </div>
@@ -82,7 +82,6 @@ window.addEventListener("load", () => {
     const loader = document.getElementById("loader");
     const music = document.getElementById("music");
 
-    // minimum show time
     setTimeout(() => {
         loader.classList.add("fade");
 
