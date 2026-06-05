@@ -1,444 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>CRIMSON</title>
+<meta charset="UTF-8">
+<title>Loading</title>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap');
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'JetBrains Mono', monospace;
-}
-
-/* ================= BOOT ================= */
-#boot {
-  position: fixed;
-  inset: 0;
-  background: #050008;
-  color: #ff1e2f;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-
-#boot h1 {
-  font-size: 42px;
-  letter-spacing: 8px;
-  text-shadow: 0 0 25px #ff1e2f;
-  animation: flicker 2s infinite;
-}
-
-#bootText {
-  margin-top: 15px;
-  font-size: 14px;
-  opacity: 0.8;
-}
-
-#progress {
-  margin-top: 20px;
-  font-size: 18px;
-}
-
-/* ================= MAIN ================= */
 body {
-  background: #050008;
-  overflow-x: hidden;
-  color: #ff2a3d;
+    margin: 0;
+    background: black;
+    font-family: Arial, sans-serif;
 }
 
-/* MATRIX */
-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: -1;
+/* LOADER SCREEN */
+#loader {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle at center, #111 0%, black 70%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 9999;
+    transition: opacity 1s ease, transform 1s ease;
 }
 
-/* PAGE FADE IN */
-.container {
-  text-align: center;
-  padding-top: 80px;
-  display: none;
-  opacity: 0;
-  transform: translateY(20px);
+/* SPINNING CHIP */
+.chip {
+    width: 150px;
+    animation: spin 1.2s linear infinite, float 2s ease-in-out infinite;
+    filter: drop-shadow(0 0 25px rgba(255, 180, 80, 0.6));
 }
 
-.container.show {
-  animation: pageIn 1.2s ease forwards;
+/* LOADING TEXT */
+.text {
+    margin-top: 20px;
+    color: #aaa;
+    letter-spacing: 3px;
+    font-size: 14px;
+    opacity: 0.8;
 }
 
-@keyframes pageIn {
-  from { opacity: 0; transform: translateY(20px); filter: blur(6px); }
-  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+/* ANIMATIONS */
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
-/* TITLE */
-h1 {
-  font-size: 72px;
-  letter-spacing: 12px;
-  color: #ff1e2f;
-  text-shadow:
-    0 0 10px #ff1e2f,
-    0 0 40px #8b0012;
-  animation: flicker 2.5s infinite;
+@keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(180deg); }
 }
 
-/* subtitle */
-.subtitle {
-  margin-top: 10px;
-  font-size: 18px;
-  color: #ff5a6a;
-}
-
-/* ================= FLICKER ================= */
-@keyframes flicker {
-  0%,100% { opacity: 1; transform: translate(0); }
-  92% { opacity: 0.85; }
-  93% { transform: translate(2px,-1px); }
-  94% { transform: translate(-2px,1px); }
-  95% { transform: translate(1px,0); }
-}
-
-/* ================= DROPDOWNS ================= */
-.dropdown {
-  width: 60%;
-  margin: 30px auto;
-}
-
-/* CYBER BUTTON */
-.dropdown button {
-  width: 100%;
-  padding: 18px;
-  background: linear-gradient(135deg, rgba(20,0,10,0.95), rgba(40,0,15,0.85));
-  color: #ff2a3d;
-  font-size: 20px;
-  border: 1px solid rgba(255,30,47,0.6);
-  cursor: pointer;
-  text-align: left;
-
-  clip-path: polygon(0 0, 92% 0, 100% 35%, 100% 100%, 8% 100%, 0 65%);
-  position: relative;
-  overflow: hidden;
-  transition: 0.3s;
-}
-
-.dropdown button:hover {
-  transform: scale(1.03);
-  box-shadow: 0 0 30px rgba(255,30,47,0.6);
-}
-
-/* scan glow */
-.dropdown button::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 30% 50%, rgba(255,30,47,0.25), transparent 60%);
-  opacity: 0;
-  transition: 0.4s;
-}
-
-.dropdown button::after {
-  content: "";
-  position: absolute;
-  top: -50%;
-  left: -40%;
-  width: 30%;
-  height: 200%;
-  background: linear-gradient(to right, transparent, rgba(255,30,47,0.4), transparent);
-  transform: rotate(25deg);
-  opacity: 0;
-}
-
-.dropdown button:hover::before {
-  opacity: 1;
-}
-
-.dropdown button:hover::after {
-  opacity: 1;
-  animation: scan 1s infinite;
-}
-
-@keyframes scan {
-  0% { left: -40%; }
-  100% { left: 120%; }
-}
-
-/* CONTENT */
-.dropdown-content {
-  display: none;
-  background: rgba(20,0,10,0.92);
-  padding: 12px;
-  border-left: 2px solid #ff1e2f;
-  animation: dropIn 0.25s ease;
-}
-
-@keyframes dropIn {
-  from { opacity: 0; transform: translateY(-10px); filter: blur(3px); }
-  to { opacity: 1; transform: translateY(0); filter: blur(0); }
-}
-
-/* ITEMS */
-.item {
-  padding: 10px;
-  margin: 6px 0;
-  border-left: 2px solid #ff1e2f;
-  color: #ff8a93;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.item:hover {
-  background: rgba(255,30,47,0.15);
-  transform: translateX(5px);
-  text-shadow: 0 0 10px rgba(255,30,47,0.6);
-  color: white;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-/* scanlines */
-body::before {
-  content: "";
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  background: repeating-linear-gradient(
-    to bottom,
-    rgba(255,30,47,0.04),
-    rgba(255,30,47,0.04) 1px,
-    transparent 1px,
-    transparent 3px
-  );
-  pointer-events: none;
+/* FADE OUT */
+#loader.fade {
+    opacity: 0;
+    transform: scale(1.1);
+    pointer-events: none;
 }
 </style>
 </head>
 
 <body>
 
-<!-- BOOT -->
-<div id="boot">
-  <h1>CRIMSON SYSTEM</h1>
-  <div id="bootText">Initializing core...</div>
-  <div id="progress">0%</div>
+<!-- LOADER -->
+<div id="loader">
+    <img src="chip.png" class="chip" alt="chip">
+    <div class="text">LOADING...</div>
+
+    <audio id="music" autoplay loop>
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
 </div>
 
-<canvas id="matrix"></canvas>
-
-<div class="container">
-  <h1>CRIMSON</h1>
-  <div class="subtitle">Tools that you ACTUALLY need.</div>
-<div style="width:60%; margin:20px auto;">
-  <input id="search" type="text" placeholder="Search tools..."
-  style="
-    width:100%;
-    padding:14px;
-    background: rgba(20,0,10,0.9);
-    border:1px solid rgba(255,30,47,0.5);
-    color:#ff2a3d;
-    outline:none;
-    font-family:'JetBrains Mono', monospace;
-  ">
-</div>
-<!-- GENERAL -->
-<div class="dropdown">
-  <button onclick="toggle(this)">▶ General (Cybersecurity Tools)</button>
-  <div class="dropdown-content">
-
-    <div class="item"><a href="https://www.wireshark.org/" target="_blank">Wireshark (Network Analyzer)</a></div>
-    <div class="item"><a href="https://nmap.org/" target="_blank">Nmap (Network Scanner)</a></div>
-    <div class="item"><a href="https://www.kali.org/tools/hydra/" target="_blank">Hydra</a></div>
-    <div class="item"><a href="https://www.metasploit.com/" target="_blank">Metasploit Framework</a></div>
-    <div class="item"><a href="https://portswigger.net/burp" target="_blank">Burp Suite</a></div>
-    <div class="item"><a href="https://www.openwall.com/john/" target="_blank">John the Ripper</a></div>
-
-  </div>
-</div>
-  <!-- GAMES -->
-<div class="dropdown">
-  <button onclick="toggle(this)">▶ Games</button>
-  <div class="dropdown-content">
-
-    <!-- ROBLOX -->
-    <div class="dropdown">
-      <button onclick="toggle(this)">▶ Roblox Tools</button>
-      <div class="dropdown-content">
-        <div class="item"><a href="https://getsolara.dev/" target="_blank">Solara</a></div>
-        <div class="item"><a href="https://www.xeno.now/" target="_blank">Xeno</a></div>
-        <div class="item"><a href="https://realvelocity.xyz/" target="_blank">Velocity</a></div>
-        <div class="item"><a href="https://yub-x.net/" target="_blank">YUB-X</a></div>
-      </div>
-    </div>
-
-    <!-- MINECRAFT -->
-    <div class="dropdown">
-      <button onclick="toggle(this)">▶ Minecraft Tools</button>
-      <div class="dropdown-content">
-        <div class="item"><a href="https://meteorclient.com" target="_blank">Meteor</a></div>
-        <div class="item"><a href="https://wurstclient.net" target="_blank">Wurst</a></div>
-        <div class="item"><a href="https://liquidbounce.net" target="_blank">LiquidBounce</a></div>
-        <div class="item"><a href="https://fabricmc.net" target="_blank">Fabric</a></div>
-        <div class="item"><a href="https://optifine.net" target="_blank">OptiFine</a></div>
-        <div class="item"><a href="https://modrinth.com" target="_blank">Modrinth</a></div>
-      </div>
-    </div>
-
-    <!-- FORTNITE -->
-    <div class="dropdown">
-      <button onclick="toggle(this)">▶ Fortnite</button>
-      <div class="dropdown-content">
-        <div class="item"><a href="https://aimmy.app" target="_blank">Aimmy</a></div>
-      </div>
-    </div>
-
-    <!-- GEOMETRY DASH -->
-    <div class="dropdown">
-      <button onclick="toggle(this)">▶ Geometry Dash</button>
-      <div class="dropdown-content">
-
-        <div class="dropdown">
-          <button onclick="toggle(this)">▶ Geode</button>
-          <div class="dropdown-content">
-            <div class="item"><a href="https://geode-sdk.org" target="_blank">Official Geode</a></div>
-            <div class="item">Eclipse</div>
-            <div class="item">QOLMod</div>
-            <div class="item">Click Between Frames</div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-  </div>
+<!-- YOUR WEBSITE CONTENT -->
+<div id="content" style="color:white; padding:40px;">
+    <h1>Welcome</h1>
 </div>
 
 <script>
+window.addEventListener("load", () => {
+    const loader = document.getElementById("loader");
+    const music = document.getElementById("music");
 
-/* BOOT (slow → fast → slow) */
-let p = 0;
-const boot = document.getElementById("boot");
-const container = document.querySelector(".container");
-const progress = document.getElementById("progress");
-const bootText = document.getElementById("bootText");
+    // minimum show time
+    setTimeout(() => {
+        loader.classList.add("fade");
 
-const msgs = [
-  "Initializing core...",
-  "Loading modules...",
-  "Decrypting system...",
-  "Syncing interface...",
-  "Finalizing..."
-];
+        setTimeout(() => {
+            music.pause();
+            loader.remove();
+        }, 1000);
 
-let m = 0;
-
-function speed(x){
-  if(x < 25) return 80;
-  if(x < 75) return 25;
-  return 90;
-}
-
-function loop(){
-  setTimeout(() => {
-    p++;
-    progress.innerText = p + "%";
-
-    if(p % 20 === 0 && m < msgs.length-1){
-      m++;
-      bootText.innerText = msgs[m];
-    }
-
-    if(p >= 100){
-      boot.style.display = "none";
-      container.style.display = "block";
-      setTimeout(() => container.classList.add("show"), 50);
-      return;
-    }
-
-    loop();
-  }, speed(p));
-}
-
-loop();
-
-/* dropdown */
-function toggle(btn){
-  const c = btn.nextElementSibling;
-  c.style.display = c.style.display === "block" ? "none" : "block";
-}
-
-/* matrix */
-const canvas = document.getElementById("matrix");
-const ctx = canvas.getContext("2d");
-
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-const chars = "01";
-const size = 14;
-const cols = canvas.width / size;
-const drops = Array(Math.floor(cols)).fill(1);
-
-function draw(){
-  ctx.fillStyle = "rgba(5,0,8,0.08)";
-  ctx.fillRect(0,0,canvas.width,canvas.height);
-
-  ctx.fillStyle = "#ff1e2f";
-  ctx.font = size + "px monospace";
-
-  for(let i=0;i<drops.length;i++){
-    const t = chars[Math.floor(Math.random()*2)];
-    ctx.fillText(t, i*size, drops[i]*size);
-
-    if(drops[i]*size > canvas.height && Math.random()>0.975){
-      drops[i]=0;
-    }
-    drops[i]++;
-  }
-}
-
-setInterval(draw,35);
-window.addEventListener("resize", () => {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-});
-/* search */
-document.getElementById("search").addEventListener("input", function(){
-
-  const q = this.value.toLowerCase();
-
-  document.querySelectorAll(".item").forEach(item => {
-
-    item.style.display =
-      item.innerText.toLowerCase().includes(q)
-      ? "block"
-      : "none";
-
-  });
-
+    }, 2500);
 });
 </script>
-<div style="
-  text-align:center;
-  margin-top: 60px;
-  padding: 20px;
-  font-size: 12px;
-  color: rgba(255,80,90,0.7);
-  border-top: 1px solid rgba(255,30,47,0.3);
-">
-  Want your tool of choice to be uploaded? Contact me at 
-  <span style="color:#ff2a3d;">
-    m3nic4llllllllllll@gmail.com
-  </span>.
-</div>
+
 </body>
 </html>
