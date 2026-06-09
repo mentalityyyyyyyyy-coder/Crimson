@@ -6,87 +6,125 @@
 <title>KYNODE</title>
 
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
-body {
-    background: #111;
-    color: white;
-    font-family: Arial, sans-serif;
-    overflow: hidden;
+body{
+    background:#111;
+    color:white;
+    font-family:Arial,sans-serif;
+    overflow:hidden;
 }
 
-/* Loading Screen */
-#loader {
-    position: fixed;
-    inset: 0;
-    background: black;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    transition: opacity 1s ease;
+/* LOADER */
+
+#loader{
+    position:fixed;
+    inset:0;
+    background:#000;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+    transition:opacity 1.2s ease;
 }
 
-#loader.fade-out {
-    opacity: 0;
-    pointer-events: none;
+#loader.fade-out{
+    opacity:0;
+    pointer-events:none;
 }
 
-#loader h1 {
-    font-size: clamp(3rem, 10vw, 8rem);
-    letter-spacing: 0.3em;
-    font-weight: 800;
-    color: white;
-    animation: glow 2s infinite alternate;
+.logo-container{
+    position:relative;
+    display:flex;
+    justify-content:center;
+    align-items:center;
 }
 
-@keyframes glow {
-    from {
-        text-shadow: 0 0 10px rgba(255,255,255,0.4);
+.lightning{
+    position:absolute;
+    font-size:clamp(8rem,20vw,18rem);
+    color:#ffd400;
+    transform:rotate(-15deg);
+    filter:drop-shadow(0 0 30px #ffd400);
+    animation:lightningPulse 2s infinite alternate;
+    user-select:none;
+}
+
+.logo-text{
+    position:relative;
+    z-index:2;
+    font-family:"Brush Script MT", cursive;
+    font-size:clamp(4rem,10vw,8rem);
+    font-weight:normal;
+    color:white;
+    text-shadow:
+        0 0 10px rgba(255,255,255,0.9),
+        0 0 25px rgba(255,255,255,0.6);
+    animation:textFloat 3s ease-in-out infinite;
+}
+
+@keyframes lightningPulse{
+    from{
+        transform:rotate(-15deg) scale(1);
+        filter:drop-shadow(0 0 20px #ffd400);
     }
-    to {
-        text-shadow:
-            0 0 20px rgba(255,255,255,0.8),
-            0 0 40px rgba(255,255,255,0.5);
+    to{
+        transform:rotate(-15deg) scale(1.08);
+        filter:drop-shadow(0 0 50px #ffd400);
     }
 }
 
-/* Main Website */
-#content {
-    opacity: 0;
-    transition: opacity 1.2s ease;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+@keyframes textFloat{
+    0%,100%{
+        transform:translateY(0);
+    }
+    50%{
+        transform:translateY(-5px);
+    }
 }
 
-#content.show {
-    opacity: 1;
+/* MAIN WEBSITE */
+
+#content{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    opacity:0;
+    transition:opacity 1.5s ease;
 }
 
-.content-box h2 {
-    font-size: 3rem;
-    margin-bottom: 1rem;
+#content.show{
+    opacity:1;
 }
 
-.content-box p {
-    color: #aaa;
-    font-size: 1.2rem;
+.content-box h2{
+    font-size:3rem;
+    margin-bottom:1rem;
+}
+
+.content-box p{
+    color:#aaa;
+    font-size:1.2rem;
 }
 </style>
 </head>
 <body>
 
+<!-- Loading Screen -->
 <div id="loader">
-    <h1>KYNODE</h1>
+    <div class="logo-container">
+        <div class="lightning">⚡</div>
+        <div class="logo-text">KYNODE</div>
+    </div>
 </div>
 
+<!-- Main Website -->
 <div id="content">
     <div class="content-box">
         <h2>Welcome to KYNODE</h2>
@@ -96,7 +134,9 @@ body {
 
 <script>
 window.addEventListener("load", () => {
+
     setTimeout(() => {
+
         document.getElementById("loader").classList.add("fade-out");
         document.getElementById("content").classList.add("show");
 
@@ -104,8 +144,10 @@ window.addEventListener("load", () => {
 
         setTimeout(() => {
             document.getElementById("loader").remove();
-        }, 1000);
-    }, 2000); // Loading screen duration (2 seconds)
+        }, 1200);
+
+    }, 2500);
+
 });
 </script>
 
