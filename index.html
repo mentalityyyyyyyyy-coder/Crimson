@@ -2,78 +2,112 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Loader</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KYNODE</title>
 
 <style>
-body {
+* {
     margin: 0;
-    background: black;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #111;
+    color: white;
+    font-family: Arial, sans-serif;
     overflow: hidden;
 }
 
-/* CENTER SCREEN */
+/* Loading Screen */
 #loader {
     position: fixed;
     inset: 0;
+    background: black;
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
+    z-index: 9999;
+    transition: opacity 1s ease;
 }
 
-/* 3D SCENE */
-.scene {
-    width: 180px;
-    height: 180px;
-    perspective: 800px;
+#loader.fade-out {
+    opacity: 0;
+    pointer-events: none;
 }
 
-/* SPINNING SPHERE */
-.sphere {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background: url("https://i1.sndcdn.com/avatars-dDNxsnFAu6GVU6CM-5ZtiLg-t240x240.jpg");
-    background-size: cover;
-
-    animation: spin 2s linear infinite;
-    transform-style: preserve-3d;
-
-    box-shadow:
-        inset -20px -20px 40px rgba(0,0,0,0.6),
-        inset 20px 20px 40px rgba(255,255,255,0.05),
-        0 0 40px rgba(255, 180, 80, 0.3);
+#loader h1 {
+    font-size: clamp(3rem, 10vw, 8rem);
+    letter-spacing: 0.3em;
+    font-weight: 800;
+    color: white;
+    animation: glow 2s infinite alternate;
 }
 
-/* REAL 3D ROTATION */
-@keyframes spin {
-    0% {
-        transform: rotateY(0deg) rotateX(10deg);
+@keyframes glow {
+    from {
+        text-shadow: 0 0 10px rgba(255,255,255,0.4);
     }
-    100% {
-        transform: rotateY(360deg) rotateX(10deg);
+    to {
+        text-shadow:
+            0 0 20px rgba(255,255,255,0.8),
+            0 0 40px rgba(255,255,255,0.5);
     }
 }
 
-/* TEXT */
-.text {
-    margin-top: 25px;
+/* Main Website */
+#content {
+    opacity: 0;
+    transition: opacity 1.2s ease;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+#content.show {
+    opacity: 1;
+}
+
+.content-box h2 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.content-box p {
     color: #aaa;
-    font-family: Arial;
-    letter-spacing: 3px;
-    font-size: 14px;
+    font-size: 1.2rem;
 }
 </style>
 </head>
-
 <body>
 
 <div id="loader">
-    <div class="scene">
-        <div class="sphere"></div>
-    </div>
-    <div class="text">LOADING...</div>
+    <h1>KYNODE</h1>
 </div>
+
+<div id="content">
+    <div class="content-box">
+        <h2>Welcome to KYNODE</h2>
+        <p>Your website content goes here.</p>
+    </div>
+</div>
+
+<script>
+window.addEventListener("load", () => {
+    setTimeout(() => {
+        document.getElementById("loader").classList.add("fade-out");
+        document.getElementById("content").classList.add("show");
+
+        document.body.style.overflow = "auto";
+
+        setTimeout(() => {
+            document.getElementById("loader").remove();
+        }, 1000);
+    }, 2000); // Loading screen duration (2 seconds)
+});
+</script>
 
 </body>
 </html>
